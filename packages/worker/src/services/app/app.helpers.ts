@@ -48,7 +48,11 @@ export const generateEnvFile = async (appId: string, config: Record<string, unkn
   const envMap = envStringToMap(baseEnvFile.toString());
 
   // Default always present env variables
-  envMap.set('APP_PORT', String(parsedConfig.data.port));
+  if(internalIp !=== "0.0.0.0") {
+    envMap.set('APP_PORT', `${internalIp}:${parsedConfig.data.port}`);
+  } else {
+    envMap.set('APP_PORT', String(parsedConfig.data.port));
+  }
   envMap.set('APP_ID', appId);
   envMap.set('ROOT_FOLDER_HOST', rootFolderHost);
   envMap.set('APP_DATA_DIR', path.join(storagePath, 'app-data', appId));
